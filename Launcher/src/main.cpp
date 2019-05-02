@@ -1,8 +1,8 @@
-#include <iostream>
+#include <Render/Window.h>
 /*============================================================================*/
 int main()
 {
-  std::cout << "Hello world!\n";
+  Window wnd;
 
   return 0;
 }
