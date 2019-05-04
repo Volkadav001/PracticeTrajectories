@@ -6,3 +6,4 @@ set(CMAKE_DEBUG_POSTFIX "_d")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
 #===============================================================================
 add_subdirectory(Launcher)
+add_subdirectory(Trajectories)
