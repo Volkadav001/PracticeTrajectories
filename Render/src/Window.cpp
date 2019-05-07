@@ -1,13 +1,22 @@
 #include "Render/Window.h"
 /*============================================================================*/
+#include <gl/GL.h>
 #include <iostream>
 /*============================================================================*/
-Window::Window(const std::string & title, int width, int height):
+Window::Window(const std::string& title, int width, int height):
   _title(title),
   _width(width),
   _height(height)
 {
   _initWindow();
+  _initContext();
+}
+/*============================================================================*/
+Window::~Window()
+{
+  wglMakeCurrent(NULL, NULL);
+  wglDeleteContext(_renderContext);
+  ReleaseDC(_wnd, _deviceContext);
 }
 /*============================================================================*/
 void Window::_initWindow()
@@ -36,16 +45,50 @@ void Window::_initWindow()
   DWORD wndStyle = WS_OVERLAPPEDWINDOW | WS_VISIBLE;
   AdjustWindowRect(&rect, wndStyle, FALSE);
 
-  HWND wnd = CreateWindow("Window", _title.c_str(),
-                          WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-                          GetSystemMetrics(SM_CXSCREEN) / 2 - _width / 2,
-                          GetSystemMetrics(SM_CYSCREEN) / 2 - _height / 2,
-                          rect.right - rect.left,
-                          rect.bottom - rect.top,
-                          NULL, NULL, instance, NULL);
+  _wnd = CreateWindow("Window", _title.c_str(),
+                      WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                      GetSystemMetrics(SM_CXSCREEN) / 2 - _width / 2,
+                      GetSystemMetrics(SM_CYSCREEN) / 2 - _height / 2,
+                      rect.right - rect.left,
+                      rect.bottom - rect.top,
+                      NULL, NULL, instance, NULL);
 
-  if (!wnd)
+  if (!_wnd)
     std::cout << "Failed to create window\n";
+}
+/*============================================================================*/
+void Window::_initContext()
+{
+  _deviceContext = GetDC(_wnd);
+
+  PIXELFORMATDESCRIPTOR pfd =
+  {
+    sizeof(PIXELFORMATDESCRIPTOR),
+    1,
+    PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER,
+    PFD_TYPE_RGBA,
+    34,
+    0, 0, 0, 0, 0, 0,
+    8, 0,
+    0,
+    0, 0, 0, 0,
+    24,
+    8,
+    0,
+    PFD_MAIN_PLANE,
+    0,
+    0, 0, 0
+  };
+
+  int format = ChoosePixelFormat(_deviceContext, &pfd);
+
+  if (!SetPixelFormat(_deviceContext, format, &pfd))
+    std::cout << "Failed to set pixel format\n";
+
+  _renderContext = wglCreateContext(_deviceContext);
+
+  if (!wglMakeCurrent(_deviceContext, _renderContext))
+    std::cout << "Failed to create and active render context\n";
 }
 /*============================================================================*/
 LRESULT Window::_wndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -71,7 +114,23 @@ void Window::Run()
       TranslateMessage(&msg);
       DispatchMessage(&msg);
     }
-    else { /*Some render code*/ }
+    else
+    {
+      glClear(GL_COLOR_BUFFER_BIT);
+
+      glBegin(GL_TRIANGLES);
+      {
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex2f(-1.0f, -1.0f);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex2f( 0.0f,  1.0f);
+        glColor3f(0.0f, 0.0f, 1.0f);
+        glVertex2f( 1.0f, -1.0f);
+      }
+      glEnd();
+
+      SwapBuffers(_deviceContext);
+    }
   }
 }
 /*============================================================================*/
