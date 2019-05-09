@@ -103,34 +103,31 @@ LRESULT Window::_wndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
   }
 }
 /*============================================================================*/
-void Window::Run()
+void Window::Clear() const
 {
-  MSG msg = {};
+  glClear(GL_COLOR_BUFFER_BIT);
+}
+/*============================================================================*/
+void Window::Update() const
+{
+  SwapBuffers(_deviceContext);
+}
+/*============================================================================*/
+bool Window::Closed() const
+{
+  MSG msg = {  };
 
-  while (WM_QUIT != msg.message)
+  while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
   {
-    if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
-    {
-      TranslateMessage(&msg);
-      DispatchMessage(&msg);
-    }
+    TranslateMessage(&msg);
+    DispatchMessage(&msg);
+
+    if (WM_QUIT == msg.message)
+      return true;
     else
-    {
-      glClear(GL_COLOR_BUFFER_BIT);
-
-      glBegin(GL_TRIANGLES);
-      {
-        glColor3f(1.0f, 0.0f, 0.0f);
-        glVertex2f(-1.0f, -1.0f);
-        glColor3f(0.0f, 1.0f, 0.0f);
-        glVertex2f( 0.0f,  1.0f);
-        glColor3f(0.0f, 0.0f, 1.0f);
-        glVertex2f( 1.0f, -1.0f);
-      }
-      glEnd();
-
-      SwapBuffers(_deviceContext);
-    }
+      return false;
   }
+
+  return false;
 }
 /*============================================================================*/

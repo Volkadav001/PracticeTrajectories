@@ -18,7 +18,10 @@ public:
   Window(const std::string& title, int width, int height);
   ~Window();
 
-  void Run();
+  void Clear() const;
+  void Update() const;
+
+  bool Closed() const;
 private:
   void _initWindow();
   void _initContext();
