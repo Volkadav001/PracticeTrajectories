@@ -10,6 +10,7 @@ Window::Window(const std::string& title, int width, int height):
 {
   _initWindow();
   _initContext();
+  _onResize(width, height);
 }
 /*============================================================================*/
 Window::~Window()
@@ -46,7 +47,8 @@ void Window::_initWindow()
   AdjustWindowRect(&rect, wndStyle, FALSE);
 
   _wnd = CreateWindow("Window", _title.c_str(),
-                      WS_OVERLAPPEDWINDOW | WS_VISIBLE,
+                      WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU |
+                      WS_MINIMIZEBOX | WS_VISIBLE,
                       GetSystemMetrics(SM_CXSCREEN) / 2 - _width / 2,
                       GetSystemMetrics(SM_CYSCREEN) / 2 - _height / 2,
                       rect.right - rect.left,
@@ -91,10 +93,34 @@ void Window::_initContext()
     std::cout << "Failed to create and active render context\n";
 }
 /*============================================================================*/
+void Window::_onResize(int width, int height)
+{
+  if (0 == height)
+    height = 1;
+
+  glViewport(0, 0, width, height);
+
+  glMatrixMode(GL_PROJECTION);
+  glLoadIdentity();
+
+  glOrtho(
+    -(float)width / 2, (float)width / 2,
+    -(float)height / 2, (float)height / 2,
+    1.0f, -1.0f);
+
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+}
+/*============================================================================*/
 LRESULT Window::_wndProc(HWND wnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+  Window* this_ptr = (Window*)GetWindowLongPtr(wnd, GWLP_USERDATA);
+
   switch (msg)
   {
+    case WM_SIZE:
+      this_ptr->_onResize(LOWORD(lParam), HIWORD(lParam));
+      return 0;
     case WM_DESTROY:
       PostQuitMessage(0);
       return 0;

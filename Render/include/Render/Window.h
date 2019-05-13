@@ -14,6 +14,12 @@ private:
   HWND _wnd;
   HDC _deviceContext;
   HGLRC _renderContext;
+private:
+  void _initWindow();
+  void _initContext();
+  void _onResize(int width, int height);
+  static LRESULT CALLBACK _wndProc(HWND wnd, UINT msg,
+                                   WPARAM wParam, LPARAM lParam);
 public:
   Window(const std::string& title, int width, int height);
   ~Window();
@@ -22,11 +28,6 @@ public:
   void Update() const;
 
   bool Closed() const;
-private:
-  void _initWindow();
-  void _initContext();
-  static LRESULT CALLBACK _wndProc(HWND wnd, UINT msg,
-                                   WPARAM wParam, LPARAM lParam);
 };
 /*============================================================================*/
 #endif // WINDOW_H
