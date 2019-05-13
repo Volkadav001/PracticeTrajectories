@@ -8,10 +8,15 @@ struct Point
   float x, y;
 };
 /*============================================================================*/
+struct Color
+{
+  unsigned char r, g, b;
+};
+/*============================================================================*/
 class Renderer
 {
 public:
-  static void Draw(const std::vector<Point>& points);
+  static void Draw(const std::vector<Point>& points, const Color& color);
 };
 /*============================================================================*/
 #endif // RENDERER_H

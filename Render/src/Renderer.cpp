@@ -3,9 +3,9 @@
 #include <Windows.h>
 #include <gl/GL.h>
 /*============================================================================*/
-void Renderer::Draw(const std::vector<Point>& points)
+void Renderer::Draw(const std::vector<Point>& points, const Color& color)
 {
-  glColor3f(0.0f, 1.0f, 0.0f);
+  glColor3ub(color.r, color.g, color.b);
   glBegin(GL_LINES);
   {
     for (std::size_t i = 0; i < points.size() - 1; ++i)
