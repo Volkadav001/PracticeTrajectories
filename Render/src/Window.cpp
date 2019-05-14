@@ -104,8 +104,8 @@ void Window::_onResize(int width, int height)
   glLoadIdentity();
 
   glOrtho(
-    -(float)width / 2, (float)width / 2,
-    -(float)height / 2, (float)height / 2,
+    -(float)width / 4, (float)width / 4,
+    -(float)height / 4, (float)height / 4,
     1.0f, -1.0f);
 
   glMatrixMode(GL_MODELVIEW);

@@ -3,7 +3,7 @@
 /*============================================================================*/
 int main()
 {
-  Window window("Test", 400, 400);
+  Window window("Test", 600, 600);
 
   std::vector<Point> points =
   {
