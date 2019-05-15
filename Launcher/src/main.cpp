@@ -1,5 +1,6 @@
-#include <iostream>
+#include <Render/Window.h>
 #include <Trajectories/Trajectories.h>
+#include <Render/Renderer.h>
 
 /*============================================================================*/
 int main()
