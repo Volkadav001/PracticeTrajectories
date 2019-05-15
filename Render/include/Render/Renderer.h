@@ -3,9 +3,9 @@
 /*============================================================================*/
 #include <vector>
 /*============================================================================*/
-struct Point
+struct Vec2
 {
-  float x, y;
+  double x, y;
 };
 /*============================================================================*/
 struct Color
@@ -16,7 +16,7 @@ struct Color
 class Renderer
 {
 public:
-  static void Draw(const std::vector<Point>& points, const Color& color);
+  static void Draw(const std::vector<Vec2>& points, const Color& color);
 };
 /*============================================================================*/
 #endif // RENDERER_H
