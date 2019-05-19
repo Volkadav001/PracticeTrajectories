@@ -21,12 +21,12 @@ public:
 
 	Point(double valueX, double valueY) :
 		x(valueX),
-		y(valueY)  //Список инициализации
+		y(valueY)  //РЎРїРёСЃРѕРє РёРЅРёС†РёР°Р»РёР·Р°С†РёРё
 	{  }
 
 	void Print()
 	{
-		cout << "Начальная точка: (" << x << "; " << y << ")" << endl;
+		cout << "РќР°С‡Р°Р»СЊРЅР°СЏ С‚РѕС‡РєР°: (" << x << "; " << y << ")" << endl;
 	}
 
 };
@@ -39,7 +39,7 @@ public:
 
 	Vector(double valueX, double valueY) :
 		x(valueX),
-		y(valueY)  //Список инициализации //передаем значения вектора для экземпляра класса
+		y(valueY)  //РЎРїРёСЃРѕРє РёРЅРёС†РёР°Р»РёР·Р°С†РёРё //РїРµСЂРµРґР°РµРј Р·РЅР°С‡РµРЅРёСЏ РІРµРєС‚РѕСЂР° РґР»СЏ СЌРєР·РµРјРїР»СЏСЂР° РєР»Р°СЃСЃР°
 	{  }
 
 	Vector () 
@@ -47,7 +47,7 @@ public:
 
 	void Print()
 	{
-		cout << "Вектор: (" << x << "; " << y << ")" << endl;
+		cout << "Р’РµРєС‚РѕСЂ: (" << x << "; " << y << ")" << endl;
 	}
 
 	double Length()
@@ -67,7 +67,7 @@ public:
 
 };
 
-Vector CreatVector (Point value1, Point value2) //Создание вектора
+Vector CreatVector (Point value1, Point value2) //РЎРѕР·РґР°РЅРёРµ РІРµРєС‚РѕСЂР°
 {
 	double x = value2.x - value1.x;
 	double y = value2.y - value1.y;
@@ -97,7 +97,7 @@ double ToRad (double grad)
 	return (grad * PI) / 180;
 }
 
-double TochkaNaPrimoy(double v1, double v2, double lambda1) //Для нахождения Ash и Csh
+double TochkaNaPrimoy(double v1, double v2, double lambda1) //Р”Р»СЏ РЅР°С…РѕР¶РґРµРЅРёСЏ Ash Рё Csh
 {
 	return (v1 + lambda1 * v2) / (lambda1 + 1);
 }
@@ -182,20 +182,20 @@ public:
 			Vector CBnorm = CB.Normalized();
 
 			double angleFi_rad = Scalar(BAnorm, BCnorm);
-			double angleFi_grad = ToGrad(angleFi_rad); //Угол между прямыми ВА и ВС
-			double anglePov_grad = 180 - angleFi_grad; //Угол поворота
+			double angleFi_grad = ToGrad(angleFi_rad); //РЈРіРѕР» РјРµР¶РґСѓ РїСЂСЏРјС‹РјРё Р’Рђ Рё Р’РЎ
+			double anglePov_grad = 180 - angleFi_grad; //РЈРіРѕР» РїРѕРІРѕСЂРѕС‚Р°
 
-			if(anglePov_grad > ANGELPOV) //Если угол поворота больше 90градусов
+			if(anglePov_grad > ANGELPOV) //Р•СЃР»Рё СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° Р±РѕР»СЊС€Рµ 90РіСЂР°РґСѓСЃРѕРІ
 			{
-				cout << "На такой угол: " << anglePov_grad << " объект повернуть не сможет! Поворот №" << i + 1 << " (основная проверка, мы уже на данной траектории)" << endl;
-				//выход из цикла....
+				cout << "РќР° С‚Р°РєРѕР№ СѓРіРѕР»: " << anglePov_grad << " РѕР±СЉРµРєС‚ РїРѕРІРµСЂРЅСѓС‚СЊ РЅРµ СЃРјРѕР¶РµС‚! РџРѕРІРѕСЂРѕС‚ в„–" << i + 1 << " (РѕСЃРЅРѕРІРЅР°СЏ РїСЂРѕРІРµСЂРєР°, РјС‹ СѓР¶Рµ РЅР° РґР°РЅРЅРѕР№ С‚СЂР°РµРєС‚РѕСЂРёРё)" << endl;
+				//РІС‹С…РѕРґ РёР· С†РёРєР»Р°....
 			}
 
 			double TangensPolFi = tan(angleFi_rad / 2);
 			double l1 = R / TangensPolFi; //lengthAshB
 
 
-			/// Если дальше есть траектория
+			/// Р•СЃР»Рё РґР°Р»СЊС€Рµ РµСЃС‚СЊ С‚СЂР°РµРєС‚РѕСЂРёСЏ
 			if (i + 3 < SizeOfPoints)
 			{
 				double xD, yD;
@@ -204,17 +204,17 @@ public:
 				Point D(xD, yD);
 
 				Vector CD = CreatVector(C, D);
-				Vector DC = CreatVector(D, C); //Может и не нужно
+				Vector DC = CreatVector(D, C); //РњРѕР¶РµС‚ Рё РЅРµ РЅСѓР¶РЅРѕ
 				Vector CDnorm = CD.Normalized();
 
 				double angleFi_rad2 = Scalar(CBnorm, CDnorm);
-				double angleFi_grad2 = ToGrad(angleFi_rad2); // Угол между прямыми ВС и СD
-				double anglePov2_grad = 180 - angleFi_grad2; //Угол поворота2
+				double angleFi_grad2 = ToGrad(angleFi_rad2); // РЈРіРѕР» РјРµР¶РґСѓ РїСЂСЏРјС‹РјРё Р’РЎ Рё РЎD
+				double anglePov2_grad = 180 - angleFi_grad2; //РЈРіРѕР» РїРѕРІРѕСЂРѕС‚Р°2
 
-				if (anglePov2_grad > ANGELPOV) //Если угол поворота больше 90градусов
+				if (anglePov2_grad > ANGELPOV) //Р•СЃР»Рё СѓРіРѕР» РїРѕРІРѕСЂРѕС‚Р° Р±РѕР»СЊС€Рµ 90РіСЂР°РґСѓСЃРѕРІ
 				{
-					cout << "На такой угол: " << anglePov2_grad << " объект повернуть не сможет! Поворот №" << i + 2 << " (просчитано заранее)" << endl;
-					//выход из цикла....
+					cout << "РќР° С‚Р°РєРѕР№ СѓРіРѕР»: " << anglePov2_grad << " РѕР±СЉРµРєС‚ РїРѕРІРµСЂРЅСѓС‚СЊ РЅРµ СЃРјРѕР¶РµС‚! РџРѕРІРѕСЂРѕС‚ в„–" << i + 2 << " (РїСЂРѕСЃС‡РёС‚Р°РЅРѕ Р·Р°СЂР°РЅРµРµ)" << endl;
+					//РІС‹С…РѕРґ РёР· С†РёРєР»Р°....
 				}
 
 				double TangensPolFi2 = tan(angleFi_rad2 / 2);
@@ -225,12 +225,12 @@ public:
 
 				if (lengthBC < Lstoron)
 				{
-					cout << "Длина следующей траектории движения не верна = " << lengthBC << " < " << Lstoron << " = l1 + l2 + DEL;  Где DEL = " << DEL <<
-						" Объект не сможет попасть на неё и пойти на новое скругление!" << endl;
-					//Выход из цикла.....
+					cout << "Р”Р»РёРЅР° СЃР»РµРґСѓСЋС‰РµР№ С‚СЂР°РµРєС‚РѕСЂРёРё РґРІРёР¶РµРЅРёСЏ РЅРµ РІРµСЂРЅР° = " << lengthBC << " < " << Lstoron << " = l1 + l2 + DEL;  Р“РґРµ DEL = " << DEL <<
+						" РћР±СЉРµРєС‚ РЅРµ СЃРјРѕР¶РµС‚ РїРѕРїР°СЃС‚СЊ РЅР° РЅРµС‘ Рё РїРѕР№С‚Рё РЅР° РЅРѕРІРѕРµ СЃРєСЂСѓРіР»РµРЅРёРµ!" << endl;
+					//Р’С‹С…РѕРґ РёР· С†РёРєР»Р°.....
 				}
 			}
-			/// Если дальше есть траектория
+			/// Р•СЃР»Рё РґР°Р»СЊС€Рµ РµСЃС‚СЊ С‚СЂР°РµРєС‚РѕСЂРёСЏ
 
 
 			double AAsh = AB.Length() - l1; // - lengthAshB
@@ -247,69 +247,69 @@ public:
 			double yCsh = TochkaNaPrimoy(yB, yC, lambda2);
 			Point Csh(xCsh, yCsh);
 
-			Point O = Centre(xA, xB, xC, yA, yB, yC, xAsh, yAsh, xCsh, yCsh); //Ищем центр окружности (удобней передать отдельными координатами, чтобы в функции не вытаскивать их поновой
+			Point O = Centre(xA, xB, xC, yA, yB, yC, xAsh, yAsh, xCsh, yCsh); //РС‰РµРј С†РµРЅС‚СЂ РѕРєСЂСѓР¶РЅРѕСЃС‚Рё (СѓРґРѕР±РЅРµР№ РїРµСЂРµРґР°С‚СЊ РѕС‚РґРµР»СЊРЅС‹РјРё РєРѕРѕСЂРґРёРЅР°С‚Р°РјРё, С‡С‚РѕР±С‹ РІ С„СѓРЅРєС†РёРё РЅРµ РІС‹С‚Р°СЃРєРёРІР°С‚СЊ РёС… РїРѕРЅРѕРІРѕР№
 			xO = O.x;
 			yO = O.y;
 
 			double rx, ry, x1, y1, angleAlfa_grad, angleAlfa_rad, angleAlfa_Ch_grad, angleAlfa_Angle_grad, angleAlfa_Angel_rad;
 
-			///Здесь делать два варианта от Сштрих(уже есть) и второй от Аштрих(сделать)
+			///Р—РґРµСЃСЊ РґРµР»Р°С‚СЊ РґРІР° РІР°СЂРёР°РЅС‚Р° РѕС‚ РЎС€С‚СЂРёС…(СѓР¶Рµ РµСЃС‚СЊ) Рё РІС‚РѕСЂРѕР№ РѕС‚ РђС€С‚СЂРёС…(СЃРґРµР»Р°С‚СЊ)
 			Vector normalAB(-AB.y, AB.x);
 			double proverkaZnaka = Scalar_no_Norm(normalAB, BC);
-			if(proverkaZnaka < 0) //Отрицительный знак не сонаправлены с нормалью(нормаль вверх)
+			if(proverkaZnaka < 0) //РћС‚СЂРёС†РёС‚РµР»СЊРЅС‹Р№ Р·РЅР°Рє РЅРµ СЃРѕРЅР°РїСЂР°РІР»РµРЅС‹ СЃ РЅРѕСЂРјР°Р»СЊСЋ(РЅРѕСЂРјР°Р»СЊ РІРІРµСЂС…)
 			{
 				rx = xCsh - xO;
 				ry = yCsh - yO;
-				angleAlfa_grad = 180 - angleFi_grad; //угол между двумя радиусами = 180 - угол между двумя прямыми траектории
-				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Делим угол на шесть частей
-				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Берем одну часть, потом вторую и тд получаем кучу точек
+				angleAlfa_grad = 180 - angleFi_grad; //СѓРіРѕР» РјРµР¶РґСѓ РґРІСѓРјСЏ СЂР°РґРёСѓСЃР°РјРё = 180 - СѓРіРѕР» РјРµР¶РґСѓ РґРІСѓРјСЏ РїСЂСЏРјС‹РјРё С‚СЂР°РµРєС‚РѕСЂРёРё
+				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Р”РµР»РёРј СѓРіРѕР» РЅР° С€РµСЃС‚СЊ С‡Р°СЃС‚РµР№
+				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Р‘РµСЂРµРј РѕРґРЅСѓ С‡Р°СЃС‚СЊ, РїРѕС‚РѕРј РІС‚РѕСЂСѓСЋ Рё С‚Рґ РїРѕР»СѓС‡Р°РµРј РєСѓС‡Сѓ С‚РѕС‡РµРє
 
-				for (int j = 0; j < 5; j++) // берем по отрезкам от 0 до 5 так как 5тый(6ой) будет уже точка Аch
+				for (int j = 0; j < 5; j++) // Р±РµСЂРµРј РїРѕ РѕС‚СЂРµР·РєР°Рј РѕС‚ 0 РґРѕ 5 С‚Р°Рє РєР°Рє 5С‚С‹Р№(6РѕР№) Р±СѓРґРµС‚ СѓР¶Рµ С‚РѕС‡РєР° Рђch
 				{
 					angleAlfa_Angel_rad = ToRad(angleAlfa_Angle_grad);
 
 					x1 = xO + rx * cos(angleAlfa_Angel_rad) - ry * sin(angleAlfa_Angel_rad);
 					y1 = yO + rx * sin(angleAlfa_Angel_rad) + ry * cos(angleAlfa_Angel_rad);
-					// Получили координаты точки от С' лежащей в angleAlfa_Angle_grad градусах
+					// РџРѕР»СѓС‡РёР»Рё РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё РѕС‚ РЎ' Р»РµР¶Р°С‰РµР№ РІ angleAlfa_Angle_grad РіСЂР°РґСѓСЃР°С…
 
 					Point Tmp(x1, y1);
-					rounding.push_back(Tmp);     // РЕЗУЛЬТАТ точки СКРУГЛЕНИЯ!!!!!!
+					rounding.push_back(Tmp);     // Р Р•Р—РЈР›Р¬РўРђРў С‚РѕС‡РєРё РЎРљР РЈР“Р›Р•РќРРЇ!!!!!!
 
 					angleAlfa_Angle_grad = angleAlfa_Angle_grad + angleAlfa_Ch_grad;
 				}
 
-				//Выгружаем точки скругления вручную
-				int tr = rounding.size(); //размер вектора точек идем от большего к меньшему
+				//Р’С‹РіСЂСѓР¶Р°РµРј С‚РѕС‡РєРё СЃРєСЂСѓРіР»РµРЅРёСЏ РІСЂСѓС‡РЅСѓСЋ
+				int tr = rounding.size(); //СЂР°Р·РјРµСЂ РІРµРєС‚РѕСЂР° С‚РѕС‡РµРє РёРґРµРј РѕС‚ Р±РѕР»СЊС€РµРіРѕ Рє РјРµРЅСЊС€РµРјСѓ
 				for (int j = 0; j < rounding.size(); j++)
 				{
 					//Point tmp = 
-					result.push_back(rounding[tr - 1]); //Последняя точка в конец результата
+					result.push_back(rounding[tr - 1]); //РџРѕСЃР»РµРґРЅСЏСЏ С‚РѕС‡РєР° РІ РєРѕРЅРµС† СЂРµР·СѓР»СЊС‚Р°С‚Р°
 					tr--;
 				}
 
-			}else //Сонаправлены с нормалью идем от A' до C'
+			}else //РЎРѕРЅР°РїСЂР°РІР»РµРЅС‹ СЃ РЅРѕСЂРјР°Р»СЊСЋ РёРґРµРј РѕС‚ A' РґРѕ C'
 			{
 				rx = xAsh - xO;
 				ry = yAsh - yO;
-				angleAlfa_grad = 180 - angleFi_grad; //угол между двумя радиусами = 180 - угол между двумя прямыми траектории
-				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Делим угол на шесть частей
-				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Счетчик по частям
+				angleAlfa_grad = 180 - angleFi_grad; //СѓРіРѕР» РјРµР¶РґСѓ РґРІСѓРјСЏ СЂР°РґРёСѓСЃР°РјРё = 180 - СѓРіРѕР» РјРµР¶РґСѓ РґРІСѓРјСЏ РїСЂСЏРјС‹РјРё С‚СЂР°РµРєС‚РѕСЂРёРё
+				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Р”РµР»РёРј СѓРіРѕР» РЅР° С€РµСЃС‚СЊ С‡Р°СЃС‚РµР№
+				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // РЎС‡РµС‚С‡РёРє РїРѕ С‡Р°СЃС‚СЏРј
 
-				for (int j = 0; j < 5; j++) // берем по отрезкам от 0 до 5 так как 5тый(6ой) будет уже точка C'
+				for (int j = 0; j < 5; j++) // Р±РµСЂРµРј РїРѕ РѕС‚СЂРµР·РєР°Рј РѕС‚ 0 РґРѕ 5 С‚Р°Рє РєР°Рє 5С‚С‹Р№(6РѕР№) Р±СѓРґРµС‚ СѓР¶Рµ С‚РѕС‡РєР° C'
 				{
 					angleAlfa_Angel_rad = ToRad(angleAlfa_Angle_grad);
 
 					x1 = xO + rx * cos(angleAlfa_Angel_rad) - ry * sin(angleAlfa_Angel_rad);
 					y1 = yO + rx * sin(angleAlfa_Angel_rad) + ry * cos(angleAlfa_Angel_rad);
-					// Получили координаты точки от A' лежащей в angleAlfa_Angle_grad градусах по направлению к C'
+					// РџРѕР»СѓС‡РёР»Рё РєРѕРѕСЂРґРёРЅР°С‚С‹ С‚РѕС‡РєРё РѕС‚ A' Р»РµР¶Р°С‰РµР№ РІ angleAlfa_Angle_grad РіСЂР°РґСѓСЃР°С… РїРѕ РЅР°РїСЂР°РІР»РµРЅРёСЋ Рє C'
 
 					Point Tmp(x1, y1);
-					result.push_back(Tmp);     // РЕЗУЛЬТАТ точки СКРУГЛЕНИЯ!!!!!!
+					result.push_back(Tmp);     // Р Р•Р—РЈР›Р¬РўРђРў С‚РѕС‡РєРё РЎРљР РЈР“Р›Р•РќРРЇ!!!!!!
 
 					angleAlfa_Angle_grad = angleAlfa_Angle_grad + angleAlfa_Ch_grad;
 				}
 			}
-			///Здесь выход из двух разных вариантов
+			///Р—РґРµСЃСЊ РІС‹С…РѕРґ РёР· РґРІСѓС… СЂР°Р·РЅС‹С… РІР°СЂРёР°РЅС‚РѕРІ
 			result.push_back(Csh);
 			i++;
 		}

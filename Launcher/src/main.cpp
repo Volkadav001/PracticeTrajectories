@@ -64,7 +64,7 @@ int main()
   Vector BA = CreatVector(points[1], points[0]);
   AB.Print();
   BA.Print();
-  double lengthAB = AB.Length(); // можно не писать, но возможно нужны будут далее
+  double lengthAB = AB.Length(); // РјРѕР¶РЅРѕ РЅРµ РїРёСЃР°С‚СЊ, РЅРѕ РІРѕР·РјРѕР¶РЅРѕ РЅСѓР¶РЅС‹ Р±СѓРґСѓС‚ РґР°Р»РµРµ
   cout << lengthAB;              //
   Vector ABnorm = AB.Normalized();
   Vector BAnorm = BA.Normalized();
