@@ -23,23 +23,30 @@ int main()
 	  //{  90.0,  20.0 },
 	  //{ 120.0,  80.0 }
 
-    { -90.0, -90.0 },
-    { -90.0,  90.0 },
-    {  90.0, 100.0 },
+    { 0.0, 0.0 },
+    { 50.0,  50.0 },
+    {  90.0,  20.0 },
+    { 120.0,  80.0 },
   };
 
   Route One;
 
   vector<Point> result = One.Rounding(points);
+  vector<Vec2> renderPoints2 = ConvertToRenderPoints(points);
   vector<Vec2> renderPoints = ConvertToRenderPoints(result);
+  
 
   Window window("Trajectories", 600, 600);
+
+
 
   while (!window.Closed())
   {
     window.Clear();
 
-    Renderer::Draw(renderPoints, { 0, 255, 0 });
+	
+	Renderer::Draw(renderPoints, { 255, 0, 0 });
+	Renderer::Draw(renderPoints2, { 0, 255, 0 });
 
     window.Update();
   }

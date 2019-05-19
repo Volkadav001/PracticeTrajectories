@@ -6,7 +6,7 @@
 #include <vector>
 
 #define PI 3.141592654
-#define R 1
+#define R 10
 #define ANGELPOV 90
 #define DEL 0.5
 
@@ -82,6 +82,11 @@ double Scalar (Vector norm1, Vector norm2)
 
 }
 
+double Scalar_no_Norm (Vector vec1, Vector vec2) 
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y;
+}
+
 double ToGrad (double rad) 
 {
 	return (rad * 180) / PI;
@@ -92,7 +97,7 @@ double ToRad (double grad)
 	return (grad * PI) / 180;
 }
 
-double TochkaNaPrimoy(double v1, double v2, double lambda1)
+double TochkaNaPrimoy(double v1, double v2, double lambda1) //Для нахождения Ash и Csh
 {
 	return (v1 + lambda1 * v2) / (lambda1 + 1);
 }
@@ -117,8 +122,6 @@ private:
 	double Vx, Vy, t0, tmpx, tmpy;
 public:
 	double LenghtWay;
-
-	
 
 	void Trajectory(const vector<Point> &points)
 	{
@@ -160,27 +163,31 @@ public:
 			double xA, xB, xC, yA, yB, yC, xO, yO;
 			xA = points[i].x;
 			yA = points[i].y;
+			Point A(xA, yA);
 			xB = points[i + 1].x;
 			yB = points[i + 1].y;
+			Point B(xB, yB);
 			xC = points[i + 2].x;
 			yC = points[i + 2].y;
+			Point C(xC, yC);
 
-			Vector AB = CreatVector(points[i], points[i + 1]);
-			Vector BA = CreatVector(points[i + 1], points[i]);
+			Vector AB = CreatVector(A, B);
+			Vector BA = CreatVector(B, A);
 			Vector ABnorm = AB.Normalized();
 			Vector BAnorm = BA.Normalized();
 
-			Vector BC = CreatVector(points[i + 1], points[i + 2]);
-			Vector CB = CreatVector(points[i + 2], points[i + 1]);
+			Vector BC = CreatVector(B, C);
+			Vector CB = CreatVector(C, B);
 			Vector BCnorm = BC.Normalized();
 			Vector CBnorm = CB.Normalized();
 
 			double angleFi_rad = Scalar(BAnorm, BCnorm);
 			double angleFi_grad = ToGrad(angleFi_rad); //Угол между прямыми ВА и ВС
+			double anglePov_grad = 180 - angleFi_grad; //Угол поворота
 
-			if(180 - angleFi_grad > ANGELPOV) 
+			if(anglePov_grad > ANGELPOV) //Если угол поворота больше 90градусов
 			{
-				cout << "На такой угол: " << angleFi_grad << " объект повернуть не сможет!" << endl;
+				cout << "На такой угол: " << anglePov_grad << " объект повернуть не сможет! Поворот №" << i + 1 << " (основная проверка, мы уже на данной траектории)" << endl;
 				//выход из цикла....
 			}
 
@@ -191,16 +198,22 @@ public:
 			/// Если дальше есть траектория
 			if (i + 3 < SizeOfPoints)
 			{
-				Vector CD = CreatVector(points[i + 2], points[i + 3]);
-				Vector DC = CreatVector(points[i + 3], points[i + 2]);
+				double xD, yD;
+				xD = points[i + 3].x;
+				yD = points[i + 3].y;
+				Point D(xD, yD);
+
+				Vector CD = CreatVector(C, D);
+				Vector DC = CreatVector(D, C); //Может и не нужно
 				Vector CDnorm = CD.Normalized();
 
-				double angleFi_rad2 = Scalar(BCnorm, CDnorm);
+				double angleFi_rad2 = Scalar(CBnorm, CDnorm);
 				double angleFi_grad2 = ToGrad(angleFi_rad2); // Угол между прямыми ВС и СD
+				double anglePov2_grad = 180 - angleFi_grad2; //Угол поворота2
 
-				if (180 - angleFi_grad2 > ANGELPOV)
+				if (anglePov2_grad > ANGELPOV) //Если угол поворота больше 90градусов
 				{
-					cout << "На такой угол: " << angleFi_grad2 << " объект повернуть не сможет!" << endl;
+					cout << "На такой угол: " << anglePov2_grad << " объект повернуть не сможет! Поворот №" << i + 2 << " (просчитано заранее)" << endl;
 					//выход из цикла....
 				}
 
@@ -212,7 +225,7 @@ public:
 
 				if (lengthBC < Lstoron)
 				{
-					cout << "Длина следующей траектории движения не верна!" <<
+					cout << "Длина следующей траектории движения не верна = " << lengthBC << " < " << Lstoron << " = l1 + l2 + DEL;  Где DEL = " << DEL <<
 						" Объект не сможет попасть на неё и пойти на новое скругление!" << endl;
 					//Выход из цикла.....
 				}
@@ -224,61 +237,85 @@ public:
 			double CCsh = BC.Length() - l1; // - lengthBCsh
 
 			double lambda1 = AAsh / l1;
-			double xAsh = TochkaNaPrimoy(points[i].x, points[i + 1].x, lambda1);
-			double yAsh = TochkaNaPrimoy(points[i].y, points[i + 1].y, lambda1);
+			double xAsh = TochkaNaPrimoy(xA, xB, lambda1);
+			double yAsh = TochkaNaPrimoy(yA, yB, lambda1);
 			Point Ash(xAsh, yAsh);
 			result.push_back(Ash);
 
 			double lambda2 = l1 / CCsh;
-			double xCsh = TochkaNaPrimoy(points[i + 1].x, points[i + 2].x, lambda2);
-			double yCsh = TochkaNaPrimoy(points[i + 1].y, points[i + 2].y, lambda2);
+			double xCsh = TochkaNaPrimoy(xB, xC, lambda2);
+			double yCsh = TochkaNaPrimoy(yB, yC, lambda2);
 			Point Csh(xCsh, yCsh);
 
-			Point O = Centre(xA, xB, xC, yA, yB, yC, xAsh, yAsh, xCsh, yCsh); //Ищем центр окружности
-
-
+			Point O = Centre(xA, xB, xC, yA, yB, yC, xAsh, yAsh, xCsh, yCsh); //Ищем центр окружности (удобней передать отдельными координатами, чтобы в функции не вытаскивать их поновой
 			xO = O.x;
 			yO = O.y;
+
 			double rx, ry, x1, y1, angleAlfa_grad, angleAlfa_rad, angleAlfa_Ch_grad, angleAlfa_Angle_grad, angleAlfa_Angel_rad;
 
-			rx = xCsh - xO;
-			ry = yCsh - yO;
-			angleAlfa_grad = 180 - angleFi_grad; //угол между двумя радиусами = 180 - угол между двумя прямыми траектории
-			angleAlfa_Ch_grad = angleAlfa_grad / 6; // Делим угол на шесть частей
-			angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Берем одну часть, потом вторую и тд получаем кучу точек
-
-			for (int i = 0; i < 5; i++) // берем по отрезкам от 0 до 5 так как 5тый(6ой) будет уже точка Аch
+			///Здесь делать два варианта от Сштрих(уже есть) и второй от Аштрих(сделать)
+			Vector normalAB(-AB.y, AB.x);
+			double proverkaZnaka = Scalar_no_Norm(normalAB, BC);
+			if(proverkaZnaka < 0) //Отрицительный знак не сонаправлены с нормалью(нормаль вверх)
 			{
-				angleAlfa_Angel_rad = ToRad(angleAlfa_Angle_grad);
+				rx = xCsh - xO;
+				ry = yCsh - yO;
+				angleAlfa_grad = 180 - angleFi_grad; //угол между двумя радиусами = 180 - угол между двумя прямыми траектории
+				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Делим угол на шесть частей
+				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Берем одну часть, потом вторую и тд получаем кучу точек
 
-				x1 = xO + rx * cos(angleAlfa_Angel_rad) - ry * sin(angleAlfa_Angel_rad);
-				y1 = yO + rx * sin(angleAlfa_Angel_rad) + ry * cos(angleAlfa_Angel_rad);
-				// Получили координаты точки от С' лежащей в angleAlfa_Angle_grad градусах
-				
-				Point Tmp(x1, y1);
-				rounding.push_back(Tmp);     // РЕЗУЛЬТАТ точки СКРУГЛЕНИЯ!!!!!!
+				for (int j = 0; j < 5; j++) // берем по отрезкам от 0 до 5 так как 5тый(6ой) будет уже точка Аch
+				{
+					angleAlfa_Angel_rad = ToRad(angleAlfa_Angle_grad);
 
-				angleAlfa_Angle_grad = angleAlfa_Angle_grad + angleAlfa_Ch_grad;
-			}
+					x1 = xO + rx * cos(angleAlfa_Angel_rad) - ry * sin(angleAlfa_Angel_rad);
+					y1 = yO + rx * sin(angleAlfa_Angel_rad) + ry * cos(angleAlfa_Angel_rad);
+					// Получили координаты точки от С' лежащей в angleAlfa_Angle_grad градусах
 
-			//Выгружаем точки скругления вручную
-			int tr = rounding.size(); //размер вектора точек идем от большего к меньшему
-			for (int i = 0; i < rounding.size(); i++)
+					Point Tmp(x1, y1);
+					rounding.push_back(Tmp);     // РЕЗУЛЬТАТ точки СКРУГЛЕНИЯ!!!!!!
+
+					angleAlfa_Angle_grad = angleAlfa_Angle_grad + angleAlfa_Ch_grad;
+				}
+
+				//Выгружаем точки скругления вручную
+				int tr = rounding.size(); //размер вектора точек идем от большего к меньшему
+				for (int j = 0; j < rounding.size(); j++)
+				{
+					//Point tmp = 
+					result.push_back(rounding[tr - 1]); //Последняя точка в конец результата
+					tr--;
+				}
+
+			}else //Сонаправлены с нормалью идем от A' до C'
 			{
-				//Point tmp = 
-				result.push_back(rounding[tr - 1]); //Последняя точка в конец результата
-				tr--;
+				rx = xAsh - xO;
+				ry = yAsh - yO;
+				angleAlfa_grad = 180 - angleFi_grad; //угол между двумя радиусами = 180 - угол между двумя прямыми траектории
+				angleAlfa_Ch_grad = angleAlfa_grad / 6; // Делим угол на шесть частей
+				angleAlfa_Angle_grad = angleAlfa_Ch_grad; // Счетчик по частям
+
+				for (int j = 0; j < 5; j++) // берем по отрезкам от 0 до 5 так как 5тый(6ой) будет уже точка C'
+				{
+					angleAlfa_Angel_rad = ToRad(angleAlfa_Angle_grad);
+
+					x1 = xO + rx * cos(angleAlfa_Angel_rad) - ry * sin(angleAlfa_Angel_rad);
+					y1 = yO + rx * sin(angleAlfa_Angel_rad) + ry * cos(angleAlfa_Angel_rad);
+					// Получили координаты точки от A' лежащей в angleAlfa_Angle_grad градусах по направлению к C'
+
+					Point Tmp(x1, y1);
+					result.push_back(Tmp);     // РЕЗУЛЬТАТ точки СКРУГЛЕНИЯ!!!!!!
+
+					angleAlfa_Angle_grad = angleAlfa_Angle_grad + angleAlfa_Ch_grad;
+				}
 			}
+			///Здесь выход из двух разных вариантов
 			result.push_back(Csh);
-
 			i++;
 		}
-
 		result.push_back(points[SizeOfPoints - 1]);
-		
 		return result;
 	}
-
 };
 
 #endif
